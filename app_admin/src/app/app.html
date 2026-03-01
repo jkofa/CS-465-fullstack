@@ -1,0 +1,196 @@
+<div class="container">
+
+  <h1>Travlr Admin</h1>
+  <p>Trips from the API</p>
+
+  <!-- Messages -->
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <div *ngIf="success" class="alert alert-success">
+    {{ success }}
+  </div>
+
+  <!-- ============================= -->
+  <!-- ADD NEW TRIP FORM -->
+  <!-- ============================= -->
+
+  <h2>Add a New Trip</h2>
+
+  <form (ngSubmit)="onAddTrip()">
+
+    <div>
+      <label>Code</label>
+      <input
+        type="text"
+        name="code"
+        [(ngModel)]="newTrip.code"
+        placeholder="e.g. KIAH001"
+        required />
+    </div>
+
+    <div>
+      <label>Name</label>
+      <input
+        type="text"
+        name="name"
+        [(ngModel)]="newTrip.name"
+        required />
+    </div>
+
+    <div>
+      <label>Length</label>
+      <input
+        type="text"
+        name="length"
+        [(ngModel)]="newTrip.length" />
+    </div>
+
+    <div>
+      <label>Resort</label>
+      <input
+        type="text"
+        name="resort"
+        [(ngModel)]="newTrip.resort" />
+    </div>
+
+    <div>
+      <label>Price (per person)</label>
+      <input
+        type="number"
+        name="perPerson"
+        [(ngModel)]="newTrip.perPerson" />
+    </div>
+
+    <div>
+      <label>Image (optional)</label>
+      <input
+        type="text"
+        name="image"
+        [(ngModel)]="newTrip.image" />
+    </div>
+
+    <div>
+      <label>Description (optional)</label>
+      <textarea
+        name="description"
+        [(ngModel)]="newTrip.description">
+      </textarea>
+    </div>
+
+    <button type="submit">Add Trip</button>
+
+  </form>
+
+  <hr />
+
+  <!-- ============================= -->
+  <!-- TRIP LIST -->
+  <!-- ============================= -->
+
+  <div *ngIf="trips.length === 0">
+    <p>No trips found.</p>
+  </div>
+
+  <div *ngFor="let trip of trips" class="trip-card">
+
+    <!-- ============================= -->
+    <!-- NORMAL VIEW -->
+    <!-- ============================= -->
+    <div *ngIf="editingTripCode !== trip.code">
+
+      <h3>{{ trip.name }}</h3>
+
+      <p><strong>Code:</strong> {{ trip.code }}</p>
+      <p><strong>Length:</strong> {{ trip.length }}</p>
+      <p><strong>Resort:</strong> {{ trip.resort }}</p>
+      <p><strong>Price:</strong> ${{ trip.perPerson }}</p>
+      <p><strong>Description:</strong> {{ trip.description }}</p>
+
+      <button type="button" (click)="startEdit(trip)">
+        Edit
+      </button>
+
+      <!-- DELETE BY CODE -->
+      <button type="button" (click)="deleteTrip(trip.code)">
+        Delete
+      </button>
+
+    </div>
+
+    <!-- ============================= -->
+    <!-- EDIT VIEW -->
+    <!-- ============================= -->
+    <div *ngIf="editingTripCode === trip.code">
+
+      <div>
+        <label>Code (read-only)</label>
+        <input
+          type="text"
+          [(ngModel)]="editTrip.code"
+          name="editCode{{trip.code}}"
+          readonly />
+      </div>
+
+      <div>
+        <label>Name</label>
+        <input
+          type="text"
+          [(ngModel)]="editTrip.name"
+          name="editName{{trip.code}}" />
+      </div>
+
+      <div>
+        <label>Length</label>
+        <input
+          type="text"
+          [(ngModel)]="editTrip.length"
+          name="editLength{{trip.code}}" />
+      </div>
+
+      <div>
+        <label>Resort</label>
+        <input
+          type="text"
+          [(ngModel)]="editTrip.resort"
+          name="editResort{{trip.code}}" />
+      </div>
+
+      <div>
+        <label>Price</label>
+        <input
+          type="number"
+          [(ngModel)]="editTrip.perPerson"
+          name="editPrice{{trip.code}}" />
+      </div>
+
+      <div>
+        <label>Image</label>
+        <input
+          type="text"
+          [(ngModel)]="editTrip.image"
+          name="editImage{{trip.code}}" />
+      </div>
+
+      <div>
+        <label>Description</label>
+        <textarea
+          [(ngModel)]="editTrip.description"
+          name="editDesc{{trip.code}}">
+        </textarea>
+      </div>
+
+      <button type="button" (click)="saveEdit()">
+        Save
+      </button>
+
+      <button type="button" (click)="cancelEdit()">
+        Cancel
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
